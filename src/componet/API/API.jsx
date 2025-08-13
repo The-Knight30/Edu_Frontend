@@ -1,0 +1,33 @@
+// During development, target backend directly; in production use current origin
+const isDev = import.meta && import.meta.env && import.meta.env.DEV;
+const origin = isDev ? "https://localhost:7155" : window.location.origin;
+export const BASEURL = `${origin}/api`;
+export const SIGNUP_ENDPOINT = "Accounts/SignUp";
+export const LOGIN_ENDPOINT = "Accounts/Login";
+export const SENDCODE_ENDPOINT = "Accounts/SendCode";
+export const VERIVICATION_ENDPOINT = "Accounts/ValidateEmailVerificationCode";
+export const ADDCOURSES_ENDPOINT = "Courses/AddCourse";
+export const GETCOURSES = `${BASEURL}/Courses/AllCoursesInSameStage?stage=`;
+export const ADDUNITETOCOURSES_ENDPOINT = "Courses/AddUniteToCourse";
+export const ADDASSIGNMENT_ENDPOINT = "Courses/AddAssignment";
+export const ALLCOURSESINSAMESTAGE_ENDPOINT = "Courses/AllCoursesInSameStage";
+export const RESETPASSWORD_ENDPOINT = "Accounts/ResetPassword";
+export const VALIDATERESETPASSWORD_ENDPOINT = "Accounts/ValidateResetPasswordCode";
+export const GETSTUDENTS = `${BASEURL}/Admin/GetStudents?bloked=`;
+export const USERSFORCOURESE = `${BASEURL}/Courses/AllStudentsInCoursById`;
+export const BLACKLIST = "Admin/RemoveFromBlackList";
+export const ADDSTUDENTTOCOURSE = "Payment/AddStudentToCourse";
+export const REMOVESTUDENFROMCOURSE = "Payment/DeleteStudentFromCourse";
+export const GETASSIGNMENTS = `${BASEURL}/Courses/AssignmentsOfStudentsToAddGrade`;
+export const ALLCOURSES = "Courses/AllCourses";
+export const DELETECOURSE = "Courses/CourseById?id=";
+export const GETSTUDENTINCOURSE = `${BASEURL}/Student/AllCoursesForStudent`;
+export const GETSTUDENTINFORMATION = `${BASEURL}/Student/StudentProfile?id=`
+export const GETSTUDENTINGRADE = `${BASEURL}/Courses/GetGradeOfExam?id=`;
+export const GETSOWNSTUDENTCOURSE = `${BASEURL}/Student/AllCoursesForStudent?studentId=`;
+export const SIGNOUT = "Accounts/SignOut";
+export const ADDGRADETOSTUDENT = "Courses/GiveGrade";
+export const GETUNITESBYCOURSEID = `${BASEURL}/Courses/AllUnitesByCourseIdForStudent/`;
+export const UPLOADSOLUTION = `Courses/UploadSolution`;
+export const ISPAYORNOT = `${BASEURL}/Courses/IsPayOrNot?`;
+export const REFRESHENDPOINT = "Accounts/UpdateTokens?email=";
