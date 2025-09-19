@@ -1,7 +1,8 @@
 // sendRequest.js
 /*eslint-disable */
 import axios from "axios";
-import { refreshAccessToken } from "../Registration/Login";
+import { refreshAccessToken } from "../Registration/authService.js";
+
 const defaultHeaders = {
   "Content-Type": "application/json",
 };

@@ -5,7 +5,7 @@ export const BASEURL = `${origin}/api`;
 export const SIGNUP_ENDPOINT = "Accounts/SignUp";
 export const LOGIN_ENDPOINT = "Accounts/Login";
 export const SENDCODE_ENDPOINT = "Accounts/SendCode";
-export const VERIVICATION_ENDPOINT = "Accounts/ValidateEmailVerificationCode";
+export const VERIVICATION_ENDPOINT = "Accounts/ValidateCode";
 export const ADDCOURSES_ENDPOINT = "Courses/AddCourse";
 export const GETCOURSES = `${BASEURL}/Courses/AllCoursesInSameStage?stage=`;
 export const ADDUNITETOCOURSES_ENDPOINT = "Courses/AddUniteToCourse";
@@ -31,3 +31,13 @@ export const GETUNITESBYCOURSEID = `${BASEURL}/Courses/AllUnitesByCourseIdForStu
 export const UPLOADSOLUTION = `Courses/UploadSolution`;
 export const ISPAYORNOT = `${BASEURL}/Courses/IsPayOrNot?`;
 export const REFRESHENDPOINT = "Accounts/UpdateTokens?email=";
+
+export const PAYMOB_START_PAYMENT_ENDPOINT = "PayMob/StartPayment"
+export const PAYMOB_PAYMENT_CALLBACK_ENDPOINT = "PayMob/PaymentCallback"
+
+
+export const CREATE_EXAM_ENDPOINT = "Exams/create"
+export const ADD_QUESTION_ENDPOINT = "Exams/add-question"
+export const GET_EXAM_ENDPOINT = "Exams/get-exam"
+export const SUBMIT_EXAM_ENDPOINT = "Exams/submit-exam"
+export const GET_EXAM_RESULTS_ENDPOINT = "Exams/results"

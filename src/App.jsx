@@ -13,36 +13,53 @@ import Users from "./componet/Admin/Users";
 import AddCourses from "./componet/Admin/AddCourses";
 import CreateNewPassword from "./componet/Registration/CreateNewPassword";
 import UnitContent from "./componet/Students/UnitContent";
+import StudentExamList from "./componet/Students/StudentExamsList";
+import TakeExam from "./componet/Students/TakeExam";
+import Payments from "./componet/Payments/Payment";
+import PaymentManagement from "./componet/Payments/PaymentManagement";
 import PageNotFound from "./componet/PageNotFound";
 import CourseContent from "./componet/Students/CourseContent";
 import AvailableCourses from "./componet/Admin/AvailableCourses";
 import ExamesResults from "./componet/Admin/ExamesResults";
+import CreateExam from "./componet/Admin/CreateExam";
+import AddQuestion from "./componet/Admin/AddQuestion";
+import PaymobPayment from "./componet/PayMob/PayMobPayment";
+import PaymentCallback from "./componet/PayMob/PaymentCallback";
+
+
+
+
 import BlackList from "./componet/Admin/BlackList";
 import DashboardStudent from "./componet/Students/DashboardStudent";
+import StudentExam from "./componet/Students/StudentExams";
 import StuProfile from "./componet/Students/StuProfile";
 import StuExamResult from "./componet/Students/StuExamResult";
 import StuCourses from "./componet/Students/StuCourses";
 import DisplayCourse from "./componet/DisplayCourse";
 import VerificationCode from "./componet/Registration/VerificationCode";
 import AddStudentToCourse from "./componet/Admin/AddStudentToCourse";
-import Payment from "./componet/Payment";
+
+import Payment from "./componet/Payments/Payment";
 import RequireAuth from "./componet/Registration/RequireAuth";
+import useCheckCookiesValues from "./componet/Hooks/useCheckCookiesValues";
+
 import RemoveStudentFromCourse from "./componet/Admin/RemoveStudentFromCourse";
 import UsersForCourses from "./componet/Admin/UsersForCourses";
 import { useEffect } from "react";
 
 function App() {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
+  const checkCookies = useCheckCookiesValues();
   // const location=useLocation()
-  useEffect(_=>{
-    
-    const search=window.location.search.split("=")
-    console.log(window.location.search);
-    if(search.length==2&&search[0]=='?route'){
-      navigate('/'+search[1])
-
+  useEffect(() => {
+    // نفذ فحص الكوكيز مرة واحدة فقط للتوجيه العام
+    checkCookies();
+    const search = window.location.search.split("=");
+    if (search.length === 2 && search[0] === "?route") {
+      navigate("/" + search[1]);
     }
-  },[])
+  }, []);
+
   return (
     <>
       <Routes>
@@ -56,15 +73,26 @@ function App() {
         <Route path="verificationCode" element={<VerificationCode />} />
         <Route path="all-courses" element={<AllCourses />} />
         <Route path="firstgrade" element={<Firstgradesecondary />} />
+        <Route path="students" element={<students />} />
         <Route path="secondgrade" element={<SecondgradeSecondary />} />
         <Route path="thirdgrade" element={<Thirdrgadesecondary />} />
+        <Route path="student-exams" element={<StudentExam />} />
+        <Route path="student-exams-list" element={<StudentExamList />} />
+        <Route path="take-exam/:examId" element={<TakeExam />} />
+        <Route path="payment-management" element={<PaymentManagement />} />
+        <Route path="payments" element={<Payments />} />
+        <Route path="paymob-payment/:courseId/:coursePrice/:studentId" element={<PaymobPayment />} />
+        <Route path="paymob-callback" element={<PaymentCallback />} />
+
+        {/* Payment Route */}
         <Route
           path="/payment/:coursePrice/:courseName"
           element={<Payment />}
         />
         {/* Routes for students */}
-        <Route  element={<RequireAuth allowedroles={"Student"} />}>
+        <Route element={<RequireAuth allowedroles={"Student"} />}>
           <Route path="dashboardstu/:studentId" element={<DashboardStudent />}>
+            <Route index element={<StuCourses />} />
             <Route path="profile" element={<StuProfile />} />
             <Route path="stuavailablecourses" element={<StuCourses />} />
             <Route path="stuexamresult" element={<StuExamResult />} />
@@ -76,9 +104,9 @@ function App() {
         </Route>
         <Route path="unIt-content" element={<UnitContent />} />
         <Route path="coursecontent/:courseId" element={<CourseContent />} />
-        
+
         {/*  */}
-       
+
         {/* Routes for Admin */}
         <Route element={<RequireAuth allowedroles={"Admin"} />}>
           <Route path="dashboard" element={<Dashboard />}>
@@ -95,6 +123,8 @@ function App() {
             <Route path="addcourse" element={<AddCourses />} />
             <Route path="availablecourses" element={<AvailableCourses />} />
             <Route path="exam-result" element={<ExamesResults />} />
+            <Route path="create-exam" element={<CreateExam />} />
+            <Route path="add-question" element={<AddQuestion />} />
             <Route path="blacklist" element={<BlackList />} />
           </Route>
         </Route>

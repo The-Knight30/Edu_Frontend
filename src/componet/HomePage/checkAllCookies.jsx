@@ -1,34 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "cookie-universal"
-  function useCheckCookiesValues() {
-   
-    const navigate = useNavigate();
+
+function useCheckCookiesValues() {
+  const navigate = useNavigate();
+  const cookies = Cookies();
+
+  return async function () {
     console.log("inside")
-  
-    const cookies = Cookies();
-    return async function (){
-    if (cookies.get("firstName") && cookies.get("lastName") && cookies.get("email") && cookies.get("id") && cookies.get("role")) {
-     const userRole=cookies.get("role")
-     const studentId=cookies.get("id")
-        if (userRole === "Admin") {
-        navigate("/dashboard");
-      } else if (userRole === "Student") {
-        navigate(`/dashboardstu/${studentId}`);
-      }
-      else {
-        try {
-       await sendRequest(BASEURL, `/${SIGNOUT}`, "DELETE");
-          cookies.removeAll();
-        }
-        catch{}
-      }
-  
-    //   return true;
+    const role = cookies.get("role");
+    const id = cookies.get("id");
+
+    if (!role || !id) return;
+
+    const target = role === "Admin" ? "/dashboard" : role === "Student" ? `/dashboardstu/${id}` : null;
+    if (!target) return;
+    if (window.location.pathname !== target) {
+      navigate(target, { replace: true });
     }
-    else {
-      cookies.removeAll();
-    //   return false;  
-    }
-}
   }
-  export default useCheckCookiesValues
+}
+
+export default useCheckCookiesValues

@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Link, Outlet, Routes, Route } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 import CommonNavbar from "../Shared/CommonNavbar";
 import { ThemeContext } from "../Context/ThemeContext";
@@ -78,7 +78,7 @@ const SideBarStudent = () => {
         </svg>
       ),
     },
- 
+
   ];
   return (
     <>
@@ -110,23 +110,20 @@ const SideBarStudent = () => {
         <CommonNavbar />
       </div>
       <div
-        className={`  pb-5 min-h-screen ${
-          isDarkMode
+        className={`  pb-5 min-h-screen ${isDarkMode
             ? "bg-neutral-900 "
             : "bg-gradient-to-b from-amber-400 to-white"
-        }`}
+          }`}
       >
         <aside
           id="logo-sidebar"
-          className={`fixed top-0 right-0 z-40 w-64 h-[95vh] mr-0 md:mr-8 pt-28 transition-transform ${
-            isAsideOpen ? "translate-x-0" : "translate-x-full"
-          } md:translate-x-0`}
+          className={`fixed top-0 right-0 z-40 w-64 h-[95vh] mr-0 md:mr-8 pt-28 transition-transform ${isAsideOpen ? "translate-x-0" : "translate-x-full"
+            } md:translate-x-0`}
           aria-label="Sidebar"
         >
           <div
-            className={`h-full px-3 pb-4 overflow-y-auto border rounded-xl shadow-md border-amber-400 ${
-              isDarkMode ? "bg-neutral-800" : "bg-white"
-            }`}
+            className={`h-full px-3 pb-4 overflow-y-auto border rounded-xl shadow-md border-amber-400 ${isDarkMode ? "bg-neutral-800" : "bg-white"
+              }`}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -139,18 +136,16 @@ const SideBarStudent = () => {
                 <li key={index} className="flex items-center justify-center">
                   <Link onClick={toggleSidebar} to={item.to} className={linkStyle}>
                     <span
-                      className={`mr-2 text-2xl font-normal ms-3 whitespace-nowrap  hover:text-gray-700 ${
-                        isDarkMode ? "text-white" : "text-amber-600"
-                      }`}
+                      className={`mr-2 text-2xl font-normal ms-3 whitespace-nowrap  hover:text-gray-700 ${isDarkMode ? "text-white" : "text-amber-600"
+                        }`}
                     >
                       {item.text}
                     </span>
                     <span
-                      className={` group-hover:text-gray-900 ${
-                        isDarkMode
+                      className={` group-hover:text-gray-900 ${isDarkMode
                           ? "text-white "
                           : "text-amber-600 group-hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       {item.svg}
                     </span>
@@ -166,9 +161,8 @@ const SideBarStudent = () => {
                   className="flex items-center cursor-pointer"
                 >
                   <div
-                    className={`text-2xl font-normal text-red-600 hover:text-red-900 ${
-                      isDarkMode ? "" : ""
-                    }`}
+                    className={`text-2xl font-normal text-red-600 hover:text-red-900 ${isDarkMode ? "" : ""
+                      }`}
                   >
                     تسجيل الخروج
                   </div>
@@ -195,9 +189,6 @@ const SideBarStudent = () => {
         <div className="min-h-screen sm:mr-72 sm:ml-20">
           <div className="pt-8 mx-1 md:mx-0 md:mr-12 ">
             <Outlet />
-            <Routes>
-              <Route path="/" element={<StuCourses />} />
-            </Routes>
           </div>
         </div>
       </div>

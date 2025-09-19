@@ -6,7 +6,7 @@ import Profile from './Profile';
 import LoadingSpinner from '../Shared/LoadingSpinner';
 import Cookies from 'cookie-universal';
 import { useNavigate } from 'react-router-dom';
-import  useCheckCookiesValues  from './checkAllCookies';
+import useCheckCookiesValues from './checkAllCookies';
 
 // export async function checkCookiesValues() {
 //   const navigate = useNavigate();
@@ -34,29 +34,29 @@ import  useCheckCookiesValues  from './checkAllCookies';
 //     return false;  
 //   }
 // }
- function HomePage() {
+function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
-const checkAllCookies=useCheckCookiesValues()
-   useEffect(() => {
-       checkAllCookies()
-      const timer = setTimeout(() => {
-      setIsLoading(false); 
-    }, 2000); 
+  const checkAllCookies = useCheckCookiesValues()
+  useEffect(() => {
+    // لا تقم بالتوجيه من الصفحة الرئيسية لتجنب التعارض مع الفاحص العام في App
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     document.title = "مستر أحمد جابر";
 
     return () => {
-      document.title = " مستر أحمد جابر"; 
+      document.title = " مستر أحمد جابر";
     };
   }, []);
   return (
     <>
       {isLoading ? (
-        <LoadingSpinner /> 
+        <LoadingSpinner />
       ) : (
         <> <NavbarApp />
           <Profile />

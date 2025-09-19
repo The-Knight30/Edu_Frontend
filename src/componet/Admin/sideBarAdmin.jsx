@@ -1,10 +1,9 @@
-import  { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, Outlet, Routes, Route } from "react-router-dom";
 import CommonNavbar from "../Shared/CommonNavbar";
 import { ThemeContext } from "../Context/ThemeContext";
 import DefaultComponet from "../Shared/DefaultComponet";
 import { handleSignOut } from "../HomePage/NavbarApp";
-
 
 const SideBarAdmin = () => {
   const { isDarkMode } = useContext(ThemeContext);
@@ -13,14 +12,15 @@ const SideBarAdmin = () => {
     setAsideOpen(!isAsideOpen);
   };
   const linkStyle = "flex items-center p-2 text-gray-900 rounded-lg group";
-  // Define an array of menu items with SVG icons
+
+  // تحديث مصفوفة menuItems بإضافة خيارات الامتحانات
   const menuItems = [
     {
       to: "/dashboard/users",
       text: "الطلاب",
       svg: (
         <svg
-          className="flex-shrink-0 w-5 h-5 text-2xl font-normal "
+          className="flex-shrink-0 w-5 h-5 text-2xl font-normal"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
@@ -32,7 +32,7 @@ const SideBarAdmin = () => {
     },
     {
       to: "/dashboard/addcourse",
-      text: "اضافة وحدة",
+      text: "إضافة وحدة",
       svg: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ const SideBarAdmin = () => {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          className="w-6 h-6 "
+          className="w-6 h-6"
         >
           <path
             stroke-linecap="round"
@@ -50,10 +50,9 @@ const SideBarAdmin = () => {
         </svg>
       ),
     },
-    
     {
       to: "/dashboard/availablecourses",
-      text: " الكورسات",
+      text: "الكورسات",
       svg: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +72,7 @@ const SideBarAdmin = () => {
     },
     {
       to: "/dashboard/exam-result",
-      text: " نتائج الامتحانات",
+      text: "نتائج الامتحانات",
       svg: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -92,8 +91,8 @@ const SideBarAdmin = () => {
       ),
     },
     {
-      to: "/dashboard/blacklist ",
-      text: " القائمة السوداء ",
+      to: "/dashboard/blacklist",
+      text: "القائمة السوداء",
       svg: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +100,7 @@ const SideBarAdmin = () => {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6"
+          className="w-6 h-6"
         >
           <path
             stroke-linecap="round"
@@ -111,10 +110,48 @@ const SideBarAdmin = () => {
         </svg>
       ),
     },
-    // Add more menu items as needed
+    {
+      to: "/dashboard/create-exam",
+      text: "إنشاء امتحان",
+      svg: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      ),
+    },
+    {
+      to: "/dashboard/add-question",
+      text: "إضافة أسئلة",
+      svg: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 6v12m6-6H6"
+          />
+        </svg>
+      ),
+    },
   ];
 
-  
   return (
     <>
       <div className="relative">
@@ -122,7 +159,7 @@ const SideBarAdmin = () => {
         <button
           onClick={toggleSidebar}
           type="button"
-          className="absolute z-50 inline-flex items-center justify-center w-10 h-10 p-2 text-sm rounded-lg top-5 right-1 md:hidden text-amber-400 "
+          className="absolute z-50 inline-flex items-center justify-center w-10 h-10 p-2 text-sm rounded-lg top-5 right-1 md:hidden text-amber-400"
           aria-controls="logo-sidebar"
         >
           <span className="sr-only">Toggle sidebar</span>
@@ -167,14 +204,14 @@ const SideBarAdmin = () => {
                 <li key={index} className="flex items-center justify-center">
                   <Link to={item.to} onClick={toggleSidebar} className={linkStyle}>
                     <span
-                      className={`mr-2 text-2xl font-normal ms-3 whitespace-nowrap  hover:text-gray-700 ${isDarkMode ? "text-white" : "text-amber-600"
+                      className={`mr-2 text-2xl font-normal ms-3 whitespace-nowrap hover:text-gray-700 ${isDarkMode ? "text-white" : "text-amber-600"
                         }`}
                     >
                       {item.text}
                     </span>
                     <span
-                      className={` group-hover:text-gray-900 ${isDarkMode
-                        ? "text-white "
+                      className={`group-hover:text-gray-900 ${isDarkMode
+                        ? "text-white"
                         : "text-amber-600 group-hover:text-gray-900"
                         }`}
                     >
@@ -185,7 +222,6 @@ const SideBarAdmin = () => {
               ))}
             </ul>
 
-            
             <div>
               <div className="flex justify-center">
                 <button onClick={handleSignOut} className="flex items-center cursor-pointer">
@@ -209,20 +245,17 @@ const SideBarAdmin = () => {
                 </button>
               </div>
             </div>
-            
           </div>
         </aside>
 
-        {/*  */}
         <div className="min-h-screen sm:mr-72 sm:ml-20">
-          <div className="pt-8 mx-1 md:mx-0 md:mr-12 ">
+          <div className="pt-8 mx-1 md:mx-0 md:mr-12">
             <Outlet />
             <Routes>
               <Route path="/" element={<DefaultComponet text="لا توجد بيانات" />} />
             </Routes>
           </div>
         </div>
-
       </div>
     </>
   );
