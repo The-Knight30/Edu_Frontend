@@ -24,7 +24,7 @@ function PaymentManagement() {
         courseId: Number.parseInt(addStudentData.courseId),
       }
 
-      const res = await sendRequest(BASEURL, ADDSTUDENTTOCOURSE, "POST", body)
+      const res = await sendRequest(BASEURL, ADDSTUDENTTOCOURSE, "POST", JSON.stringify(body))
 
       if (res.status === 200) {
         toast.success("تم إضافة الطالب للكورس بنجاح")
@@ -50,7 +50,7 @@ function PaymentManagement() {
         courseId: Number.parseInt(removeStudentData.courseId),
       }
 
-      const res = await sendRequest(BASEURL, REMOVESTUDENFROMCOURSE, "DELETE", body)
+      const res = await sendRequest(BASEURL, REMOVESTUDENFROMCOURSE, "POST", JSON.stringify(body))
 
       if (res.status === 200) {
         toast.success("تم حذف الطالب من الكورس بنجاح")
@@ -88,23 +88,21 @@ function PaymentManagement() {
           <div className="w-full">
             <div className={`flex justify-center mb-8 ${isDarkMode ? "bg-gray-800" : "bg-white"} rounded-lg p-1 shadow-lg`}>
               <button
-                onClick={() => {}}
-                className={`px-6 py-3 rounded-lg font-medium transition-all flex-1 ${
-                  isDarkMode
+                onClick={() => { }}
+                className={`px-6 py-3 rounded-lg font-medium transition-all flex-1 ${isDarkMode
                     ? "text-gray-300 hover:text-white"
                     : "text-gray-600 hover:text-gray-800"
-                }`}
+                  }`}
                 style={{ backgroundColor: "transparent" }}
               >
                 إضافة طالب للكورس
               </button>
               <button
-                onClick={() => {}}
-                className={`px-6 py-3 rounded-lg font-medium transition-all flex-1 ${
-                  isDarkMode
+                onClick={() => { }}
+                className={`px-6 py-3 rounded-lg font-medium transition-all flex-1 ${isDarkMode
                     ? "text-gray-300 hover:text-white"
                     : "text-gray-600 hover:text-gray-800"
-                }`}
+                  }`}
                 style={{ backgroundColor: "transparent" }}
               >
                 حذف طالب من الكورس

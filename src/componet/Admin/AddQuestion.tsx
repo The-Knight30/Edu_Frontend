@@ -49,7 +49,7 @@ const AddQuestion = () => {
     setIsLoading(true)
 
     try {
-      const response = await sendRequest(BASEURL, "Exams/add-question", "POST", JSON.stringify(questionData))
+      const response = await sendRequest(BASEURL, "Exams/question", "POST", questionData)
 
       if (response.status === 200 || response.status === 201) {
         toast.success("تم إضافة السؤال بنجاح")

@@ -24,11 +24,12 @@ function Thirdrgadesecondary() {
   const fetchData = async () => {
     try {
       const response = await sendRequestGet(`${GETCOURSES}2`);
-      setsecondgrade(response.data);
+      const list = Array.isArray(response?.data) ? response.data : [];
+      setsecondgrade(list);
     } catch (error) {
       console.error("Error fetching student data:", error);
     }
-    finally{
+    finally {
       setLoading(false)
     }
   };
@@ -43,9 +44,8 @@ function Thirdrgadesecondary() {
 
       <NavbarApp />
       <div
-        className={`min-h-screen ${
-          isDarkMode &&!loading ? "bg-gray-950" : "bg-amber-100"
-        } `}
+        className={`min-h-screen ${isDarkMode && !loading ? "bg-gray-950" : "bg-amber-100"
+          } `}
       >
         <div>
           <Wave title="الصف الثالث الثانوي" />
@@ -53,9 +53,8 @@ function Thirdrgadesecondary() {
             {secondgrade.length === 0 ? (
               <div className="max-w-7xl mx-auto   flex justify-center items-center h-[50vh]">
                 <div
-                  className={`text-2xl ${
-                    isDarkMode ? "text-white" : "text-black"
-                  }`}
+                  className={`text-2xl ${isDarkMode ? "text-white" : "text-black"
+                    }`}
                 >
                   لا توجد كورسات متاحة حاليا
                 </div>
@@ -65,9 +64,8 @@ function Thirdrgadesecondary() {
                 {secondgrade.map((course, index) => (
                   <div
                     key={index}
-                    className={`shadow-xl w-full max-w-[22rem] rounded-[20px] ${
-                      isDarkMode ? "bg-neutral-800" : "bg-white"
-                    }`}
+                    className={`shadow-xl w-full max-w-[22rem] rounded-[20px] ${isDarkMode ? "bg-neutral-800" : "bg-white"
+                      }`}
                   >
                     <Link to="">
                       <img
@@ -77,9 +75,8 @@ function Thirdrgadesecondary() {
                       />
                     </Link>
                     <div
-                      className={`p-5 -mt-4 ${
-                        isDarkMode ? "bg-neutral-800 rounded-b-[20px]" : ""
-                      }`}
+                      className={`p-5 -mt-4 ${isDarkMode ? "bg-neutral-800 rounded-b-[20px]" : ""
+                        }`}
                     >
                       <div className="flex items-center justify-between mb-1">
                         <button className="bg-sky-400 rounded-full px-5 py-2 text-white flex items-center text-xl font-bold font-['Mukta'] leading-normal mt-3 cursor-auto">
@@ -89,20 +86,18 @@ function Thirdrgadesecondary() {
 
                         <Link to="">
                           <h5
-                            className={`text-right font-bold text-2xl ${
-                              isDarkMode
-                                ? "text-white"
-                                : "text-gray-800 rounded-b-[20px]"
-                            }`}
+                            className={`text-right font-bold text-2xl ${isDarkMode
+                              ? "text-white"
+                              : "text-gray-800 rounded-b-[20px]"
+                              }`}
                           >
                             {course.courseName}
                           </h5>
                         </Link>
                       </div>
                       <div
-                        className={`text-right my-6 courseDiscription-notAuth  text-xl font-normal font-['Noto Sans Arabic'] leading-normal  ${
-                          isDarkMode ? "text-white" : "text-gray-800"
-                        }`}
+                        className={`text-right my-6 courseDiscription-notAuth  text-xl font-normal font-['Noto Sans Arabic'] leading-normal  ${isDarkMode ? "text-white" : "text-gray-800"
+                          }`}
                       >
                         {`${course.courseDescription.split("-")}`}
                       </div>
@@ -110,11 +105,10 @@ function Thirdrgadesecondary() {
                         <div className="">
                           <Link
                             to={`/payment/${course.coursePrice}/${course.courseName}`}
-                            className={`p-5 rounded-[20px] shadow text-white  ${
-                              isDarkMode
-                                ? "bg-red-600 hover:bg-red-700 "
-                                : "bg-gray-800 hover:bg-gray-900"
-                            } `}
+                            className={`p-5 rounded-[20px] shadow text-white  ${isDarkMode
+                              ? "bg-red-600 hover:bg-red-700 "
+                              : "bg-gray-800 hover:bg-gray-900"
+                              } `}
                           >
                             اشتراك
                           </Link>
@@ -123,9 +117,8 @@ function Thirdrgadesecondary() {
                           <Link
                             to={`/coursecontent/${course.courseId}`}
                             state={{ data: course }}
-                            className={`bg-amber-400 rounded-[20px] hover:bg-amber-500 px-3 xl:px-7 py-2.5 transition duration-700 ${
-                              isDarkMode ? "text-white" : ""
-                            }`}
+                            className={`bg-amber-400 rounded-[20px] hover:bg-amber-500 px-3 xl:px-7 py-2.5 transition duration-700 ${isDarkMode ? "text-white" : ""
+                              }`}
                           >
                             الدخول للكورس
                           </Link>

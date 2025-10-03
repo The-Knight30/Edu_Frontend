@@ -5,13 +5,13 @@ import { refreshAccessToken } from "../Registration/authService"
 
 const cookies = Cookies()
 
-const defaultHeaders = { "Content-Type": "application/json" }
+const defaultHeaders = { Accept: "*/*", "Content-Type": "application/json" }
 
 const sendRequest = async (
-  baseURL: string,
-  endpoint: string,
-  method: string,
-  data: any = {},
+  baseURLOrFullUrl: string,
+  endpoint?: string,
+  method?: string,
+  data: any = undefined,
   customHeaders: Record<string, string> = {},
   hasHeaders = true,
 ) => {
@@ -23,10 +23,14 @@ const sendRequest = async (
       ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     }
 
-    const config = {
-      method,
-      url: `${baseURL}/${endpoint}`,
-      data,
+    const isFullUrl = endpoint === undefined || endpoint === null
+    const finalMethod = (method || "GET").toUpperCase()
+    const url = isFullUrl ? baseURLOrFullUrl : `${baseURLOrFullUrl}/${endpoint}`
+
+    const config: any = {
+      method: finalMethod,
+      url,
+      ...(finalMethod === "GET" ? {} : { data }),
       ...(hasHeaders && { headers }),
       withCredentials: true,
     }

@@ -134,13 +134,13 @@ function Login() {
         <div className="col-span-5 col-start-3 pt-4">
           <div
             className={`text-right text-[20px] font-medium leading-normal mb-5 md:mb-3 ${isDarkMode ? " text-sky-400" : "text-amber-400"
-              }`}
+            }`}
           >
             : تسجيل الدخول
           </div>
           <p
             className={`mb-14 text-right text-base md:text-xl font-normal leading-normal ${isDarkMode ? "text-white" : " text-gray-800"
-              }`}
+            }`}
           >
             ادخل إلى الحساب الخاص بك من خلال إدخال البريد الإلكتروني و كلمة السر
           </p>
@@ -184,7 +184,7 @@ function Login() {
                 <div className="text-right ">
                   <button
                     className={`rounded-[9px] shadow-xl px-4 lg:px-20 py-2 text-white transition duration-700 ${isDarkMode ? "bg-sky-400 hover:bg-sky-500" : "bg-gray-800 hover:bg-gray-900"
-                      }`}
+                    }`}
                   >
                     تسجيل الدخول
                   </button>
@@ -193,7 +193,7 @@ function Login() {
                     لا يوجد لديك حساب؟
                     <Link
                       className={`text-center text-xl font-normal leading-normal ${isDarkMode ? "text-sky-400 hover:text-amber-400" : "text-amber-400 hover:text-amber-950"
-                        }`}
+                      }`}
                       to="/signup"
                     >
                       انشئ حسابك الآن
@@ -201,7 +201,7 @@ function Login() {
                   </h2>
                   <button
                     className={`text-xl font-normal leading-normal ${isDarkMode ? "text-sky-400 hover:text-amber-400" : " text-amber-400 hover:text-amber-950"
-                      }`}
+                    }`}
                     onClick={async (e) => await handleResetPassword(e)}
                   >
                     هل نسيت كلمة السر ؟

@@ -24,16 +24,19 @@ export default function PaymentCallback() {
           callbackData[key] = value
         })
 
-        const response = await sendRequest(BASEURL, `/${PAYMOB_PAYMENT_CALLBACK_ENDPOINT}`, "POST", callbackData)
+        const response = await sendRequest(BASEURL, PAYMOB_PAYMENT_CALLBACK_ENDPOINT, "POST", callbackData)
 
-        if (response.success) {
+        console.log("PayMob callback response:", response);
+        console.log("Callback data:", callbackData);
+
+        if (response.status === 200 || response.status === 201) {
           setStatus("success")
-          setMessage(response.message || "تم الدفع بنجاح وتم إضافتك للكورس")
+          setMessage(response.data?.message || "تم الدفع بنجاح وتم إضافتك للكورس")
           toast.success("تم الدفع بنجاح!")
         } else {
           setStatus("failed")
-          setMessage(response.message || "فشل في التحقق من عملية الدفع")
-          toast.error(response.message || "فشل في التحقق")  // صحح هنا
+          setMessage(response.data?.message || `فشل في التحقق من عملية الدفع: ${response.status}`)
+          toast.error(response.data?.message || "فشل في التحقق")
         }
       } catch (error: any) {
         setStatus("error")
@@ -56,9 +59,8 @@ export default function PaymentCallback() {
   // باقي الـ JSX نفسه (الـ return statement) بدون تغيير
   return (
     <div className={`min-h-screen flex items-center justify-center p-6 ${isDarkMode ? "bg-gray-900" : "bg-gray-50"}`}>
-      <div className={`w-full max-w-md rounded-xl shadow-lg p-6 transition-all duration-300 ${
-        isDarkMode ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-200"
-      }`}>
+      <div className={`w-full max-w-md rounded-xl shadow-lg p-6 transition-all duration-300 ${isDarkMode ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-200"
+        }`}>
         <div className="text-center mb-6">
           <h2 className={`text-2xl font-bold ${isDarkMode ? "text-white" : "text-gray-800"}`}>نتيجة عملية الدفع</h2>
           <p className={`${isDarkMode ? "text-gray-300" : "text-gray-600"} text-sm`}>معالجة نتيجة الدفع عبر PayMob</p>
@@ -74,9 +76,8 @@ export default function PaymentCallback() {
 
           {status === "success" && (
             <>
-              <div className={`p-4 rounded-lg border-2 text-center ${
-                isDarkMode ? "border-green-600 bg-green-900/20" : "border-green-200 bg-green-50"
-              }`}>
+              <div className={`p-4 rounded-lg border-2 text-center ${isDarkMode ? "border-green-600 bg-green-900/20" : "border-green-200 bg-green-50"
+                }`}>
                 <CheckCircle className={`h-6 w-6 mx-auto mb-2 ${isDarkMode ? "text-green-400" : "text-green-600"}`} />
                 <p className={`${isDarkMode ? "text-green-300" : "text-green-800"}`}>{message}</p>
               </div>
@@ -100,9 +101,8 @@ export default function PaymentCallback() {
 
           {(status === "failed" || status === "error") && (
             <>
-              <div className={`p-4 rounded-lg border-2 text-center ${
-                isDarkMode ? "border-red-600 bg-red-900/20" : "border-red-200 bg-red-50"
-              }`}>
+              <div className={`p-4 rounded-lg border-2 text-center ${isDarkMode ? "border-red-600 bg-red-900/20" : "border-red-200 bg-red-50"
+                }`}>
                 <XCircle className={`h-6 w-6 mx-auto mb-2 ${isDarkMode ? "text-red-400" : "text-red-600"}`} />
                 <p className={`${isDarkMode ? "text-red-300" : "text-red-800"}`}>{message}</p>
               </div>

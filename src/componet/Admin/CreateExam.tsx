@@ -1,10 +1,8 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useContext } from "react"
+import React, { useState, useContext } from "react"  // import React كامل عشان يحل TS error 2686
 import { ThemeContext } from "../Context/ThemeContext"
-import sendRequest from "../Shared/sendRequest.ts";
+import sendRequest from "../Shared/sendRequest.ts"
 import { BASEURL } from "../API/API"
 import { toast } from "react-toastify"
 import SpinnerModal from "../Shared/SpinnerModal"
@@ -38,10 +36,23 @@ const CreateExam = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // تحقق إضافي لو الـ data valid (مثل time >0، courseId >0)
+    if (examData.time <= 0 || examData.courseId <= 0 || !examData.startDate) {
+      toast.error("يرجى ملء جميع الحقول بشكل صحيح")
+      return
+    }
+
     setIsLoading(true)
 
     try {
-      const response = await sendRequest(BASEURL, "/Exams/create", "POST", examData)
+      // حوّل startDate لـ ISO format عشان backend يقبله (زي في curl)
+      const formattedData = {
+        ...examData,
+        startDate: new Date(examData.startDate).toISOString(),
+      }
+
+      const response = await sendRequest(BASEURL, "Exams", "POST", formattedData)
 
       if (response.status === 200 || response.status === 201) {
         toast.success("تم إنشاء الامتحان بنجاح")
@@ -53,10 +64,13 @@ const CreateExam = () => {
           courseId: 0,
         })
       } else {
-        toast.error("حدث خطأ في إنشاء الامتحان")
+        // Log الـ response كامل لو error
+        console.error("API Response Error:", response.data || response)
+        toast.error("حدث خطأ في إنشاء الامتحان: " + (response.data?.message || "خطأ غير معروف"))
       }
-    } catch (error) {
-      toast.error("حدث خطأ في الاتصال")
+    } catch (error: any) {
+      console.error("Error creating exam:", error.message || error)
+      toast.error("حدث خطأ في الاتصال: " + (error.message || "خطأ غير معروف"))
     } finally {
       setIsLoading(false)
     }
@@ -85,11 +99,10 @@ const CreateExam = () => {
                     value={examData.name}
                     onChange={handleInputChange}
                     required
-                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${
-                      isDarkMode
-                        ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                        : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
-                    }`}
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${isDarkMode
+                      ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                      : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                      }`}
                     placeholder="أدخل اسم الامتحان"
                   />
                 </div>
@@ -104,11 +117,10 @@ const CreateExam = () => {
                     value={examData.courseId || ""}
                     onChange={handleInputChange}
                     required
-                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${
-                      isDarkMode
-                        ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                        : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
-                    }`}
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${isDarkMode
+                      ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                      : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                      }`}
                     placeholder="أدخل رقم الكورس"
                   />
                 </div>
@@ -124,11 +136,10 @@ const CreateExam = () => {
                   onChange={handleInputChange}
                   required
                   rows={4}
-                  className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all resize-none ${
-                    isDarkMode
-                      ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                      : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all resize-none ${isDarkMode
+                    ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                    : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                    }`}
                   placeholder="أدخل وصف الامتحان"
                 />
               </div>
@@ -144,9 +155,8 @@ const CreateExam = () => {
                     value={examData.startDate}
                     onChange={handleInputChange}
                     required
-                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${
-                      isDarkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"
-                    }`}
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${isDarkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"
+                      }`}
                   />
                 </div>
 
@@ -161,17 +171,16 @@ const CreateExam = () => {
                     onChange={handleInputChange}
                     required
                     min="1"
-                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${
-                      isDarkMode
-                        ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                        : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
-                    }`}
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${isDarkMode
+                      ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                      : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                      }`}
                     placeholder="مدة الامتحان"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-center pt-6">
+              <div className="flex flex-col items-center pt-6">
                 <button
                   type="submit"
                   disabled={isLoading}

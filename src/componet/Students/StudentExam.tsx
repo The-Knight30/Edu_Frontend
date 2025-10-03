@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useContext, useEffect } from "react"
+import React, { useState, useContext, useEffect } from "react"  // import React كامل عشان يحل TS error 2686
 import { ThemeContext } from "../Context/ThemeContext"
 import sendRequestGet from "../Shared/sendRequestGet"
 import sendRequest from "../Shared/sendRequest.ts"
@@ -37,12 +37,14 @@ const StudentExams = () => {
 
     try {
       const response = await sendRequestGet(`${BASEURL}/Student/AvailableExams?studentId=${studentId}`)
+      console.log("API Response:", response)  // Log للـ debugging
       if (response.status === 200) {
         setExams(response.data)
       } else {
-        toast.error("حدث خطأ في تحميل الامتحانات")
+        toast.error("حدث خطأ في تحميل الامتحانات: " + (response.data?.message || ""))
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Error fetching exams:", error.message || error)
       toast.error("حدث خطأ في الاتصال")
     } finally {
       setIsLoading(false)
@@ -89,9 +91,8 @@ const StudentExams = () => {
               {exams.map((exam) => (
                 <div
                   key={exam.examId}
-                  className={`rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 ${
-                    isDarkMode ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-200"
-                  }`}
+                  className={`rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 ${isDarkMode ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-200"
+                    }`}
                 >
                   <div className="flex items-center justify-between mb-4">
                     <h3 className={`text-xl font-bold ${isDarkMode ? "text-white" : "text-gray-800"}`}>{exam.name}</h3>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useContext, useEffect } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import { ThemeContext } from "../Context/ThemeContext"
 import sendRequest from "../Shared/sendRequest.ts";
 import sendRequestGet from "../Shared/sendRequestGet.ts";
@@ -33,7 +34,9 @@ interface Answer {
   answerText: string
 }
 
-const TakeExam = ({ examId }: { examId: number }) => {
+const TakeExam = () => {
+  const { examId } = useParams()
+  const navigate = useNavigate()
   const { isDarkMode } = useContext(ThemeContext)
   const [isLoading, setIsLoading] = useState(false)
   const [examData, setExamData] = useState<ExamData | null>(null)
@@ -60,7 +63,7 @@ const TakeExam = ({ examId }: { examId: number }) => {
   const fetchExamData = async () => {
     setIsLoading(true)
     try {
-      const response = await sendRequestGet(`${BASEURL}/Exams/get-exam/${examId}`)
+      const response = await sendRequestGet(`${BASEURL}/Exams/${examId}`)
       if (response.status === 200) {
         setExamData(response.data)
         setTimeLeft(response.data.time * 60) // Convert minutes to seconds
@@ -93,21 +96,30 @@ const TakeExam = ({ examId }: { examId: number }) => {
 
     try {
       const submitData = {
-        examId: examData?.examId,
+        examId: examData?.id || parseInt(examId),
         studentId,
         answers,
       }
 
-      const response = await sendRequest(BASEURL, "/Exams/submit-exam", "POST", submitData)
+      console.log("Submit Data:", submitData)
+      console.log("Exam Data:", examData)
+      console.log("Student ID:", studentId)
+      console.log("Answers:", answers)
+
+      const response = await sendRequest(BASEURL, "Exams/submit", "POST", submitData)
 
       if (response.status === 200 || response.status === 201) {
         toast.success("تم تسليم الامتحان بنجاح")
         setExamStarted(false)
+        // التوجه لصفحة النتائج أو الامتحانات
+        navigate("/available-exams")
       } else {
-        toast.error("حدث خطأ في تسليم الامتحان")
+        console.error("Submit response:", response)
+        toast.error(`حدث خطأ في تسليم الامتحان: ${response.status}`)
       }
     } catch (error) {
-      toast.error("حدث خطأ في الاتصال")
+      console.error("Submit error:", error)
+      toast.error(`حدث خطأ في الاتصال: ${error.response?.status || 'Unknown'}`)
     } finally {
       setIsLoading(false)
     }
@@ -155,9 +167,8 @@ const TakeExam = ({ examId }: { examId: number }) => {
               <div className="flex justify-between items-center mb-8">
                 <h1 className={`text-2xl font-bold ${isDarkMode ? "text-white" : "text-gray-800"}`}>{examData.name}</h1>
                 <div
-                  className={`px-6 py-3 rounded-lg font-bold text-xl ${
-                    timeLeft < 300 ? "bg-red-500 text-white" : "bg-blue-500 text-white"
-                  }`}
+                  className={`px-6 py-3 rounded-lg font-bold text-xl ${timeLeft < 300 ? "bg-red-500 text-white" : "bg-blue-500 text-white"
+                    }`}
                 >
                   {formatTime(timeLeft)}
                 </div>
@@ -167,9 +178,8 @@ const TakeExam = ({ examId }: { examId: number }) => {
                 {examData.questions.map((question, index) => (
                   <div
                     key={question.questionId}
-                    className={`p-6 rounded-lg border-2 ${
-                      isDarkMode ? "bg-gray-700 border-gray-600" : "bg-gray-50 border-gray-200"
-                    }`}
+                    className={`p-6 rounded-lg border-2 ${isDarkMode ? "bg-gray-700 border-gray-600" : "bg-gray-50 border-gray-200"
+                      }`}
                   >
                     <h3 className={`text-lg font-bold mb-4 ${isDarkMode ? "text-white" : "text-gray-800"}`}>
                       السؤال {index + 1}: {question.questionText}
@@ -181,9 +191,8 @@ const TakeExam = ({ examId }: { examId: number }) => {
                         (option, optionIndex) => (
                           <label
                             key={optionIndex}
-                            className={`flex items-center p-3 rounded-lg cursor-pointer hover:bg-opacity-50 transition-all ${
-                              isDarkMode ? "hover:bg-gray-600" : "hover:bg-gray-200"
-                            }`}
+                            className={`flex items-center p-3 rounded-lg cursor-pointer hover:bg-opacity-50 transition-all ${isDarkMode ? "hover:bg-gray-600" : "hover:bg-gray-200"
+                              }`}
                           >
                             <input
                               type="radio"

@@ -50,9 +50,8 @@ function NavbarApp() {
   return (
     <>
       <nav
-        className={`sticky top-0 z-40 md:z-50 w-full ${
-          isDarkMode ? "bg-gray-950 shadow" : "bg-white"
-        } shadow border-b-0 md:border-b-[7px] border-amber-400`}
+        className={`sticky top-0 z-40 md:z-50 w-full ${isDarkMode ? "bg-gray-950 shadow" : "bg-white"
+          } shadow border-b-0 md:border-b-[7px] border-amber-400`}
       >
         <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto ">
           <div className="flex ">
@@ -67,9 +66,8 @@ function NavbarApp() {
 
             {/* dark mode */}
             <button
-              className={`px-4 py-2  font-medium  ${
-                isDarkMode ? "text-white" : "text-black"
-              } ${isDarkMode ? "" : "dark:text-gray-800"}`}
+              className={`px-4 py-2  font-medium  ${isDarkMode ? "text-white" : "text-black"
+                } ${isDarkMode ? "" : "dark:text-gray-800"}`}
               onClick={toggleDarkMode}
             >
               <svg
@@ -138,9 +136,8 @@ function NavbarApp() {
             </svg>
           </button>
           <div
-            className={`w-full md:block md:w-auto ${
-              isOpen ? "block" : "hidden"
-            }`}
+            className={`w-full md:block md:w-auto ${isOpen ? "block" : "hidden"
+              }`}
             id="navbar-default"
           >
             <ul
@@ -148,6 +145,28 @@ function NavbarApp() {
             >
               {auth.role ? (
                 <>
+                  <li className="mt-5 md:mt-0">
+                    <Link
+                      className={`${isDarkMode
+                        ? "bg-green-500 text-white hover:bg-green-600"
+                        : "bg-green-500 text-white hover:bg-green-600"
+                        } w-full rounded-lg shadow-lg px-4 py-2 md:text-xl font-medium transition duration-700 font-Mukta flex items-center justify-center`}
+                      to="/buy-courses"
+                    >
+                      🛒 شراء الكورسات
+                    </Link>
+                  </li>
+                  <li className="mt-5 md:mt-0">
+                    <Link
+                      className={`${isDarkMode
+                        ? "bg-purple-500 text-white hover:bg-purple-600"
+                        : "bg-purple-500 text-white hover:bg-purple-600"
+                        } w-full rounded-lg shadow-lg px-4 py-2 md:text-xl font-medium transition duration-700 font-Mukta flex items-center justify-center`}
+                      to="/available-exams"
+                    >
+                      📝 الامتحانات
+                    </Link>
+                  </li>
                   {/* <li className="mt-5 md:mt-0">
                     <button
                       onClick={async () => {
@@ -178,11 +197,10 @@ function NavbarApp() {
                 <>
                   <li className="">
                     <Link
-                      className={`${
-                        isDarkMode
-                          ? " bg-sky-400 text-white hover:bg-sky-500  "
-                          : " bg-amber-400 text-white hover:bg-amber-500 "
-                      } w-full  rounded-lg shadow-lg px-4 py-2 md:text-xl font-medium  transition duration-700  font-Mukta flex items-center justify-center`}
+                      className={`${isDarkMode
+                        ? " bg-sky-400 text-white hover:bg-sky-500  "
+                        : " bg-amber-400 text-white hover:bg-amber-500 "
+                        } w-full  rounded-lg shadow-lg px-4 py-2 md:text-xl font-medium  transition duration-700  font-Mukta flex items-center justify-center`}
                       to="/login"
                     >
                       تسجيل الدخول
@@ -205,11 +223,34 @@ function NavbarApp() {
 
                   <li className="mt-5 md:mt-0">
                     <Link
-                      className={`${
-                        isDarkMode
-                          ? " bg-amber-400 text-black hover:bg-amber-500"
-                          : "text-white bg-gray-800 hover:bg-gray-900"
-                      } w-full rounded-lg  px-4 py-2  md:text-xl font-medium transition duration-700   font-Mukta flex items-center justify-center`}
+                      className={`${isDarkMode
+                        ? "bg-green-500 text-white hover:bg-green-600"
+                        : "bg-green-500 text-white hover:bg-green-600"
+                        } w-full rounded-lg shadow-lg px-4 py-2 md:text-xl font-medium transition duration-700 font-Mukta flex items-center justify-center`}
+                      to="/buy-courses"
+                    >
+                      🛒 تصفح الكورسات
+                    </Link>
+                  </li>
+
+                  <li className="mt-5 md:mt-0">
+                    <Link
+                      className={`${isDarkMode
+                        ? "bg-purple-500 text-white hover:bg-purple-600"
+                        : "bg-purple-500 text-white hover:bg-purple-600"
+                        } w-full rounded-lg shadow-lg px-4 py-2 md:text-xl font-medium transition duration-700 font-Mukta flex items-center justify-center`}
+                      to="/available-exams"
+                    >
+                      📝 الامتحانات
+                    </Link>
+                  </li>
+
+                  <li className="mt-5 md:mt-0">
+                    <Link
+                      className={`${isDarkMode
+                        ? " bg-amber-400 text-black hover:bg-amber-500"
+                        : "text-white bg-gray-800 hover:bg-gray-900"
+                        } w-full rounded-lg  px-4 py-2  md:text-xl font-medium transition duration-700   font-Mukta flex items-center justify-center`}
                       to="/signup"
                     >
                       انشئ حسابك الان{" "}

@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { ThemeContext } from "./../Context/ThemeContext";
-import { BASEURL, BLACKLIST, GETSTUDENTS } from "../API/API";
+import { BASEURL, BLACKLIST_ADD, BLACKLIST_REMOVE, GETSTUDENTS } from "../API/API";
 import { toast } from "react-toastify";
 import sendRequest from "../Shared/sendRequest";
 import sendRequestGet from "../Shared/sendRequestGet";
@@ -13,24 +13,25 @@ export default function BlackList() {
   const [BlockStudents, setBlockStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 6;
-  const [loading,setLoading]=useState(true);
-  
+  const [loading, setLoading] = useState(true);
+
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = BlockStudents.slice(indexOfFirstItem, indexOfLastItem);
-  
+  const currentItems = Array.isArray(BlockStudents) ? BlockStudents.slice(indexOfFirstItem, indexOfLastItem) : [];
+
   const fetchData = async (setBlockStudents) => {
-   try {
-     setLoading(true);
-     const response = await sendRequestGet(`${GETSTUDENTS}true`);
-     setBlockStudents(response.data);
-   } catch (error) {
-     console.error("Error fetching student data:", error);
-   }
-   finally{
-     setLoading(false)
-   }
- };
+    try {
+      setLoading(true);
+      const response = await sendRequestGet(`${GETSTUDENTS}true`);
+      const list = Array.isArray(response?.data) ? response.data : [];
+      setBlockStudents(list);
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+    }
+    finally {
+      setLoading(false)
+    }
+  };
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
@@ -50,11 +51,7 @@ export default function BlackList() {
   const RemoveToBlacklist = async (studentId) => {
     console.log(studentId);
     try {
-      const res = await sendRequest(
-        BASEURL,
-        `${BLACKLIST}/${studentId}`,
-        "POST"
-      );
+      const res = await sendRequest(BASEURL, `${BLACKLIST_REMOVE}/${studentId}`, "POST");
       if (res.status === 200) {
         toast.success("تم حذف الطالب من القائمة السوداء");
       }
@@ -67,21 +64,19 @@ export default function BlackList() {
 
   return (
     <>
-        <SpinnerModal isLoading={loading}/>
+      <SpinnerModal isLoading={loading} />
       <div className="relative overflow-x-auto rounded-[25px] ml-6 md:ml-0">
 
         <div className="inline-block min-w-full">
           <table
-            className={`w-full text-base text-center shadow ${
-              isDarkMode ? "" : ""
-            }`}
+            className={`w-full text-base text-center shadow ${isDarkMode ? "" : ""
+              }`}
           >
             <thead
-              className={`h-16 font-bold font-['Noto Sans Arabic'] ${
-                isDarkMode
+              className={`h-16 font-bold font-['Noto Sans Arabic'] ${isDarkMode
                   ? "bg-neutral-800 text-white"
                   : "bg-amber-400 text-neutral-800"
-              }`}
+                }`}
             >
               <tr>
                 <th className={`${isDarkMode ? "text-white" : "text-black"}`}>
@@ -115,9 +110,8 @@ export default function BlackList() {
                 return (
                   <tr
                     key={index}
-                    className={`${
-                      isDarkMode ? `${rowClassDark} text-white` : `${rowClass}`
-                    }`}
+                    className={`${isDarkMode ? `${rowClassDark} text-white` : `${rowClass}`
+                      }`}
                   >
                     <td className="flex items-center justify-center px-6 py-4 text-neutral-800">
                       <button
@@ -163,9 +157,8 @@ export default function BlackList() {
         </div>
 
         <div
-          className={`flex justify-center ${
-            isDarkMode ? "bg-neutral-800" : "bg-gray-200"
-          }`}
+          className={`flex justify-center ${isDarkMode ? "bg-neutral-800" : "bg-gray-200"
+            }`}
         >
           <div className="my-4">
             <ReactPaginate

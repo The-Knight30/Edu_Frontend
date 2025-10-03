@@ -10,7 +10,7 @@ import SpinnerModal from "../Shared/SpinnerModal";
 
 
 function Firstgradesecondary(props) {
-  const [loading,setLoading]=useState(true)
+  const [loading, setLoading] = useState(true)
   const [firstgrade, setFirstGrade] = useState([]);
   const { isDarkMode } = useContext(ThemeContext);
   useEffect(() => {
@@ -20,22 +20,23 @@ function Firstgradesecondary(props) {
       document.title = "مستر أحمد جابر ";
     };
   }, []);
- 
+
 
   const fetchData = async () => {
     try {
       const response = await sendRequestGet(`${GETCOURSES}0`);
-      setFirstGrade(response.data);
+      const list = Array.isArray(response?.data) ? response.data : [];
+      setFirstGrade(list);
     } catch (error) {
       console.error("Error fetching student data:", error);
     }
-    finally{
+    finally {
       setLoading(false)
     }
   };
 
   useEffect(() => {
-   
+
     fetchData();
   }, []);
 
@@ -51,7 +52,7 @@ function Firstgradesecondary(props) {
         <div>
           <Wave title="الصف الأول الثانوي" />
           <div className="px-5 mx-auto max-w-7xl md:px-8">
-            {firstgrade.length === 0 &&!loading? (
+            {firstgrade.length === 0 && !loading ? (
               <div className="max-w-7xl mx-auto   flex justify-center items-center h-[50vh]">
                 <div
                   className={`text-2xl ${isDarkMode ? "text-white" : "text-black"
@@ -88,8 +89,8 @@ function Firstgradesecondary(props) {
                         <Link to="">
                           <h5
                             className={`text-right font-bold text-2xl ${isDarkMode
-                                ? "text-white"
-                                : "text-gray-800 rounded-b-[20px]"
+                              ? "text-white"
+                              : "text-gray-800 rounded-b-[20px]"
                               }`}
                           >
                             {course.courseName}

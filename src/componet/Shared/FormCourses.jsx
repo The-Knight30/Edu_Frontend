@@ -65,19 +65,20 @@ const FormCourses = ({ title }) => {
         try {
           const body = new FormData();
           console.log(InputsRef.current);
-          
-          InputsRef.current[1].videoFiles[0]?body.append('Story', InputsRef.current[1].videoFiles[0]):null;
+
+          InputsRef.current[1].videoFiles[0] ? body.append('Story', InputsRef.current[1].videoFiles[0]) : null;
           body.append('StoryPdf', InputsRef.current[1].pdfFiles[0]);
-          InputsRef.current[0].videoFiles[0]? body.append('Vocablary', InputsRef.current[0].videoFiles[0]):null;
+          InputsRef.current[0].videoFiles[0] ? body.append('Vocablary', InputsRef.current[0].videoFiles[0]) : null;
           body.append('VocablaryPdf', InputsRef.current[0].pdfFiles[0]);
-          InputsRef.current[3].videoFiles[0]? body.append('Translation', InputsRef.current[3].videoFiles[0]):null;
+          InputsRef.current[3].videoFiles[0] ? body.append('Translation', InputsRef.current[3].videoFiles[0]) : null;
           body.append('TranslationPdf', InputsRef.current[3].pdfFiles[0]);
-          InputsRef.current[4].videoFiles[0]? body.append('Exam', InputsRef.current[4].videoFiles[0]):null;
-          InputsRef.current[2].videoFiles[0]? body.append('Skill', InputsRef.current[2].videoFiles[0]):null;
+          InputsRef.current[4].videoFiles[0] ? body.append('Exam', InputsRef.current[4].videoFiles[0]) : null;
+          InputsRef.current[2].videoFiles[0] ? body.append('Skill', InputsRef.current[2].videoFiles[0]) : null;
           body.append('SkillPdf', InputsRef.current[2].pdfFiles[0]);
-          
+
           console.log(Array.from(body.entries()));
-          body.append("CourseId", res.data.coursId); // id is taken from the response of adding a course to db
+          const createdId = res?.data?.courseId || res?.data?.coursId || res?.data?.id;
+          body.append("CourseId", createdId);
           const res2 = await sendRequest(
             BASEURL,
             ADDUNITETOCOURSES_ENDPOINT,
@@ -91,7 +92,7 @@ const FormCourses = ({ title }) => {
             try {
               const body = new FormData();
               body.append("AssFile", InputsRef.current[4].pdfFiles[0]);
-              body.append("FullMark", stuDegree );
+              body.append("FullMark", stuDegree);
               body.append("UnitId", res2.data);
               body.append("Name", examName);
               // console.log(Array.from(body.entries()));
@@ -104,8 +105,8 @@ const FormCourses = ({ title }) => {
               );
               console.log(res3)
             } catch (err) {
-            toast.error("حدث خطأ")
-              
+              toast.error("حدث خطأ")
+
               console.log(err);
             }
           }
@@ -117,8 +118,8 @@ const FormCourses = ({ title }) => {
         }
       }
     }
-    
-    
+
+
     catch (err) {
       toast.error("حدث خطأ")
       console.log(err);
@@ -133,7 +134,7 @@ const FormCourses = ({ title }) => {
 
   const handleInputVideoChange = (index, videoFiles) => {
 
-    InputsRef.current[index].videoFiles.push( videoFiles);
+    InputsRef.current[index].videoFiles.push(videoFiles);
 
   };
   const handleInputFileChange = (index, pdfFiles) => {
@@ -144,15 +145,13 @@ const FormCourses = ({ title }) => {
       <SpinnerModal isLoading={isLoading} />
 
       <div
-        className={`grid grid-cols-6 lg:grid-cols-4 gap-4 mt-0 lg:pt-4 mx-2  md:m-0 min-h-screen pb-10  ${
-          isDarkMode ? "bg-neutral-900" : ""
-        }`}
+        className={`grid grid-cols-6 lg:grid-cols-4 gap-4 mt-0 lg:pt-4 mx-2  md:m-0 min-h-screen pb-10  ${isDarkMode ? "bg-neutral-900" : ""
+          }`}
       >
         <div className="col-span-6 md:col-start-2">
           <div
-            className={`text-right text-[20px] font-medium leading-normal mb-2 ${
-              isDarkMode ? "text-white" : "text-black"
-            }`}
+            className={`text-right text-[20px] font-medium leading-normal mb-2 ${isDarkMode ? "text-white" : "text-black"
+              }`}
           >
             {title}
           </div>
@@ -165,9 +164,8 @@ const FormCourses = ({ title }) => {
             <div className="col-span-2 lg:col-span-1">
               <label
                 htmlFor="imageCourse"
-                className={`flex justify-end my-1 ${
-                  isDarkMode ? "text-white" : "text-black"
-                }`}
+                className={`flex justify-end my-1 ${isDarkMode ? "text-white" : "text-black"
+                  }`}
               >
                 صورة الوحدة
               </label>
@@ -175,9 +173,8 @@ const FormCourses = ({ title }) => {
                 type="file"
                 id="imageCourse"
                 placeholder="اختر صورة الوحدة"
-                className={`rounded-lg p-2 bg-gray-400 border-none w-full text-right ${
-                  isDarkMode ? "" : ""
-                }`}
+                className={`rounded-lg p-2 bg-gray-400 border-none w-full text-right ${isDarkMode ? "" : ""
+                  }`}
                 ref={imageCourseRef}
                 required
               />
@@ -185,9 +182,8 @@ const FormCourses = ({ title }) => {
             <div className="col-span-2 lg:col-span-1">
               <label
                 htmlFor="courseName"
-                className={`flex justify-end my-1 ${
-                  isDarkMode ? "text-white" : "text-black"
-                }`}
+                className={`flex justify-end my-1 ${isDarkMode ? "text-white" : "text-black"
+                  }`}
               >
                 اسم الوحدة
               </label>
@@ -195,9 +191,8 @@ const FormCourses = ({ title }) => {
                 type="text"
                 id="courseName"
                 placeholder="ادخل اسم الوحدة"
-                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${
-                  isDarkMode ? "" : ""
-                }`}
+                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${isDarkMode ? "" : ""
+                  }`}
                 value={courseName}
                 onChange={(e) => setCourseName(e.target.value)}
                 required
@@ -207,9 +202,8 @@ const FormCourses = ({ title }) => {
             <div className="col-span-2 lg:col-span-1">
               <label
                 htmlFor="coursePrice"
-                className={`flex justify-end my-1 ${
-                  isDarkMode ? "text-white" : "text-black"
-                }`}
+                className={`flex justify-end my-1 ${isDarkMode ? "text-white" : "text-black"
+                  }`}
               >
                 سعر الوحدة
               </label>
@@ -217,9 +211,8 @@ const FormCourses = ({ title }) => {
                 type="number"
                 id="coursePrice"
                 placeholder="ادخل سعر الوحدة"
-                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${
-                  isDarkMode ? "" : ""
-                }`}
+                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${isDarkMode ? "" : ""
+                  }`}
                 value={coursePrice}
                 onChange={(e) => setCoursePrice(e.target.value)}
                 required
@@ -230,9 +223,8 @@ const FormCourses = ({ title }) => {
             <div className="col-span-2 lg:col-span-1">
               <label
                 htmlFor="courseName"
-                className={`flex justify-end my-1 ${
-                  isDarkMode ? "text-white" : "text-black"
-                }`}
+                className={`flex justify-end my-1 ${isDarkMode ? "text-white" : "text-black"
+                  }`}
               >
                 عدد ساعات الوحده
               </label>
@@ -240,9 +232,8 @@ const FormCourses = ({ title }) => {
                 type="number"
                 id="Hourscourse"
                 placeholder="ادخل عدد ساعات الوحدة"
-                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${
-                  isDarkMode ? "" : ""
-                }`}
+                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${isDarkMode ? "" : ""
+                  }`}
                 value={Hourscourse}
                 onChange={(e) => setHourscourse(e.target.value)}
                 required
@@ -251,9 +242,8 @@ const FormCourses = ({ title }) => {
             <div className="col-span-2 lg:col-span-1">
               <label
                 htmlFor="coursedescription"
-                className={`flex justify-end my-1 ${
-                  isDarkMode ? "text-white" : "text-black"
-                }`}
+                className={`flex justify-end my-1 ${isDarkMode ? "text-white" : "text-black"
+                  }`}
               >
                 إضافة وصف الكورس
               </label>
@@ -261,9 +251,8 @@ const FormCourses = ({ title }) => {
                 type="text"
                 id="coursedescription"
                 placeholder="ادخل وصف الكورس"
-                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${
-                  isDarkMode ? "" : ""
-                }`}
+                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${isDarkMode ? "" : ""
+                  }`}
                 value={CourseDescription}
                 onChange={(e) => setcourseDescription(e.target.value)}
                 required
@@ -272,17 +261,15 @@ const FormCourses = ({ title }) => {
             <div className="col-span-2 lg:col-span-1">
               <label
                 htmlFor="studentLevel"
-                className={`my-0.5 flex justify-end ${
-                  isDarkMode ? "text-white" : "text-black"
-                }`}
+                className={`my-0.5 flex justify-end ${isDarkMode ? "text-white" : "text-black"
+                  }`}
               >
                 اختيار الصف
               </label>
               <select
                 id="studentLevel"
-                className={` rounded-lg p-2 border-none w-full text-right bg-gray-400   ${
-                  isDarkMode ? "" : ""
-                }`}
+                className={` rounded-lg p-2 border-none w-full text-right bg-gray-400   ${isDarkMode ? "" : ""
+                  }`}
                 value={selectedStage}
                 onChange={handleStageChange}
                 required
@@ -303,9 +290,8 @@ const FormCourses = ({ title }) => {
                 <div className="w-full ">
                   <label
                     htmlFor={`${input.name}-pdf`}
-                    className={`my-1 ${
-                      isDarkMode ? "text-white" : "text-black"
-                    }`}
+                    className={`my-1 ${isDarkMode ? "text-white" : "text-black"
+                      }`}
                   >
                     ملف {input.name}
                   </label>
@@ -313,9 +299,8 @@ const FormCourses = ({ title }) => {
                     type="file"
                     id={`${input.name}-pdf`}
                     placeholder={`ادخل PDF ${input.name}`}
-                    className={`rounded-lg p-2 bg-gray-400 border-none w-full text-right  ${
-                      isDarkMode ? "" : ""
-                    }`}
+                    className={`rounded-lg p-2 bg-gray-400 border-none w-full text-right  ${isDarkMode ? "" : ""
+                      }`}
                     // value={input.pdfValue} // Remove value attribute
                     onChange={
                       (e) => handleInputFileChange(index, e.target.files) // Pass null as videoFiles parameter
@@ -325,9 +310,8 @@ const FormCourses = ({ title }) => {
                 <div className="w-full">
                   <label
                     htmlFor={`${input.name}-video`}
-                    className={`my-1 ${
-                      isDarkMode ? "text-white" : "text-black"
-                    }`}
+                    className={`my-1 ${isDarkMode ? "text-white" : "text-black"
+                      }`}
                   >
                     فيديو {input.name}
                   </label>
@@ -335,9 +319,8 @@ const FormCourses = ({ title }) => {
                     type="url"
                     id={`${input.name}-video`}
                     placeholder={`ادخل فيديو ${input.name}`}
-                    className={`rounded-lg p-2 bg-gray-400 border-none w-full text-right  ${
-                      isDarkMode ? "" : ""
-                    }`}
+                    className={`rounded-lg p-2 bg-gray-400 border-none w-full text-right  ${isDarkMode ? "" : ""
+                      }`}
                     // value={input.videoValue} // Remove value attribute
                     onChange={
                       (e) => handleInputVideoChange(index, e.target.value) // Pass null as pdfFiles parameter
@@ -350,9 +333,8 @@ const FormCourses = ({ title }) => {
             <div className="col-span-2 lg:col-span-1">
               <label
                 htmlFor="assignmentName"
-                className={`flex justify-end my-1 ${
-                  isDarkMode ? "text-white" : "text-black"
-                }`}
+                className={`flex justify-end my-1 ${isDarkMode ? "text-white" : "text-black"
+                  }`}
               >
                 اسم الأمتحان
               </label>
@@ -360,9 +342,8 @@ const FormCourses = ({ title }) => {
                 type="text"
                 id="assignmentName"
                 placeholder="ادخل اسم الامتحان"
-                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${
-                  isDarkMode ? "" : ""
-                }`}
+                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${isDarkMode ? "" : ""
+                  }`}
                 value={examName}
                 onChange={(e) => setExamName(e.target.value)}
               />
@@ -370,9 +351,8 @@ const FormCourses = ({ title }) => {
             <div className="col-span-2 lg:col-span-1">
               <label
                 htmlFor="studegree"
-                className={`flex justify-end my-1 ${
-                  isDarkMode ? "text-white" : "text-black"
-                }`}
+                className={`flex justify-end my-1 ${isDarkMode ? "text-white" : "text-black"
+                  }`}
               >
                 درجة الأمتحان النهائية
               </label>
@@ -380,9 +360,8 @@ const FormCourses = ({ title }) => {
                 type="number"
                 id="studegree"
                 placeholder="ادخل الدرجة النهائية"
-                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${
-                  isDarkMode ? "" : ""
-                }`}
+                className={`rounded-lg p-2 bg-gray-400 placeholder:text-black   border-none w-full text-right outline-none  ${isDarkMode ? "" : ""
+                  }`}
                 value={stuDegree}
                 onChange={(e) => setStuDegree(e.target.value)}
               />
@@ -390,11 +369,10 @@ const FormCourses = ({ title }) => {
 
             <div className="col-span-2 text-right">
               <button
-                className={`rounded-[9px] shadow px-4 lg:px-20 py-3 hover:border hover:border-amber-400 hover:bg-white hover:text-black my-2 transition duration-700 ${
-                  isDarkMode
+                className={`rounded-[9px] shadow px-4 lg:px-20 py-3 hover:border hover:border-amber-400 hover:bg-white hover:text-black my-2 transition duration-700 ${isDarkMode
                     ? "bg-amber-400 text-white"
                     : "bg-gray-800 text-white "
-                }`}
+                  }`}
               >
                 {title}
               </button>

@@ -25,6 +25,12 @@ import CreateExam from "./componet/Admin/CreateExam";
 import AddQuestion from "./componet/Admin/AddQuestion";
 import PaymobPayment from "./componet/PayMob/PayMobPayment";
 import PaymentCallback from "./componet/PayMob/PaymentCallback";
+import PayMobWrapper from "./componet/PayMob/PayMobWrapper";
+import AvailableCoursesToBuy from "./componet/Students/AvailableCoursesToBuy";
+import AvailableExams from "./componet/Students/AvailableExams";
+import ExamDetails from "./componet/Students/ExamDetails";
+import ExamResultsManagement from "./componet/Admin/ExamResultsManagement";
+import ExamResultsDetail from "./componet/Admin/ExamResultsDetail";
 
 
 
@@ -81,8 +87,12 @@ function App() {
         <Route path="take-exam/:examId" element={<TakeExam />} />
         <Route path="payment-management" element={<PaymentManagement />} />
         <Route path="payments" element={<Payments />} />
-        <Route path="paymob-payment/:courseId/:coursePrice/:studentId" element={<PaymobPayment />} />
+        <Route path="paymob-payment/:courseId/:coursePrice/:courseName" element={<PayMobWrapper />} />
         <Route path="paymob-callback" element={<PaymentCallback />} />
+        <Route path="course-payment/:courseId" element={<PayMobWrapper />} />
+        <Route path="buy-courses" element={<AvailableCoursesToBuy />} />
+        <Route path="available-exams" element={<AvailableExams />} />
+        <Route path="exam-details/:examId" element={<ExamDetails />} />
 
         {/* Payment Route */}
         <Route
@@ -109,7 +119,7 @@ function App() {
 
         {/* Routes for Admin */}
         <Route element={<RequireAuth allowedroles={"Admin"} />}>
-          <Route path="dashboard" element={<Dashboard />}>
+          <Route path="dashboard/*" element={<Dashboard />}>
             <Route path="users" element={<Users />} />
             <Route path="usersForCourses/:courseId" element={<UsersForCourses />} />
             <Route
@@ -125,6 +135,8 @@ function App() {
             <Route path="exam-result" element={<ExamesResults />} />
             <Route path="create-exam" element={<CreateExam />} />
             <Route path="add-question" element={<AddQuestion />} />
+            <Route path="exam-results" element={<ExamResultsManagement />} />
+            <Route path="exam-results/:examId" element={<ExamResultsDetail />} />
             <Route path="blacklist" element={<BlackList />} />
           </Route>
         </Route>

@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { ThemeContext } from "./../Context/ThemeContext";
-import { BASEURL, BLACKLIST, GETSTUDENTS } from "../API/API";
+import { BASEURL, BLACKLIST_ADD, GETSTUDENTS } from "../API/API";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../Shared/ConfirmationModal";
 import sendRequest from "../Shared/sendRequest";
@@ -17,17 +17,17 @@ export default function Users() {
   const itemsPerPage = 6;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = students.slice(indexOfFirstItem, indexOfLastItem);
-  const [loading,setLoading]=useState(true)
-   const fetchData = async (setStudents) => {
+  const currentItems = Array.isArray(students) ? students.slice(indexOfFirstItem, indexOfLastItem) : [];
+  const [loading, setLoading] = useState(true)
+  const fetchData = async (setStudents) => {
     try {
       setLoading(true)
       const response = await sendRequestGet(`${GETSTUDENTS}false`);
-  
-      setStudents(response.data);
+      const list = Array.isArray(response?.data) ? response.data : [];
+      setStudents(list);
     } catch (error) {
       console.error("Error fetching student data:", error);
-    }finally{
+    } finally {
       setLoading(false)
     }
   };
@@ -54,11 +54,7 @@ export default function Users() {
 
   const handleConfirmBlacklist = async () => {
     try {
-      let res = await sendRequest(
-        BASEURL,
-        `Admin/AddToBlackList/${selectedStudentId}`,
-        "POST"
-      );
+      let res = await sendRequest(BASEURL, `${BLACKLIST_ADD}/${selectedStudentId}`, "POST");
       if (res.status === 200) {
         toast.success("تم إضافة الطالب إلى القائمة السوداء");
       }
@@ -80,20 +76,18 @@ export default function Users() {
 
   return (
     <>
-    <SpinnerModal isLoading={loading}/>
+      <SpinnerModal isLoading={loading} />
       <div className="relative overflow-x-auto rounded-[25px] ml-6 md:ml-0">
         <div className="inline-block min-w-full">
           <table
-            className={`w-full text-base text-center shadow ${
-              isDarkMode ? "" : ""
-            }`}
+            className={`w-full text-base text-center shadow ${isDarkMode ? "" : ""
+              }`}
           >
             <thead
-              className={`h-16 font-bold font-['Noto Sans Arabic'] ${
-                isDarkMode
+              className={`h-16 font-bold font-['Noto Sans Arabic'] ${isDarkMode
                   ? "bg-neutral-800 text-white"
                   : "bg-amber-400 text-neutral-800"
-              }`}
+                }`}
             >
               <tr>
                 <th className={`${isDarkMode ? "text-white" : "text-black"}`}>
@@ -127,9 +121,8 @@ export default function Users() {
                 return (
                   <tr
                     key={index}
-                    className={`${
-                      isDarkMode ? `${rowClassDark} text-white` : `${rowClass}`
-                    }`}
+                    className={`${isDarkMode ? `${rowClassDark} text-white` : `${rowClass}`
+                      }`}
                   >
                     <td className="flex items-center justify-center px-6 py-4 text-neutral-800">
                       <button
@@ -173,9 +166,8 @@ export default function Users() {
         </div>
 
         <div
-          className={`flex justify-center ${
-            isDarkMode ? "bg-neutral-800" : "bg-gray-200"
-          }`}
+          className={`flex justify-center ${isDarkMode ? "bg-neutral-800" : "bg-gray-200"
+            }`}
         >
           <div className="my-4">
             <ReactPaginate

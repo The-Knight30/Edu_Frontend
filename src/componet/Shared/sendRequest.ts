@@ -24,10 +24,23 @@ const sendRequest = async (
     const methodUpper = (method || "GET").toUpperCase()
     const isGet = methodUpper === "GET"
 
+    const unauthenticatedEndpoints = [
+      "Accounts/Login",
+      "Accounts/SignUp",
+      "Accounts/SendCode",
+      "Accounts/ValidateCode",
+      "Accounts/ValidateResetPasswordCode",
+      "Accounts/ResetPassword",
+      "PayMob/start",
+      "PayMob/callback",
+    ]
+    const endpointPath = endpoint.replace(/^\/?/, "")
+    const shouldIncludeAuth = !unauthenticatedEndpoints.some((p) => endpointPath.startsWith(p))
+
     const headers = {
       ...(isGet ? {} : defaultHeaders),
       ...customHeaders,
-      ...(methodUpper !== "POST" && accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      ...(shouldIncludeAuth && accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     }
 
     const config = {
