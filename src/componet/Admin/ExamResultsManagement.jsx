@@ -24,75 +24,17 @@ const ExamResultsManagement = () => {
         const fetchExams = async () => {
             try {
                 setLoading(true);
-
-                // جلب جميع الامتحانات
                 const response = await sendRequestGet(`${BASEURL}/${GET_ALL_EXAMS_ENDPOINT}`);
-
                 if (response.status === 200 && response.data) {
                     const examsData = Array.isArray(response.data) ? response.data : [];
-
-                    // محاولة جلب إحصائيات لكل امتحان
-                    const examsWithStats = await Promise.all(
-                        examsData.map(async (exam) => {
-                            try {
-                                // محاولة جلب نتائج الامتحان (إذا كان الـ endpoint متوفر)
-                                const resultsResponse = await sendRequestGet(`${BASEURL}/Exams/${exam.id}/results`);
-
-                                return {
-                                    ...exam,
-                                    studentsCount: resultsResponse.data?.studentsCount || 0,
-                                    submissionsCount: resultsResponse.data?.submissionsCount || 0,
-                                    averageGrade: resultsResponse.data?.averageGrade || 0,
-                                    hasResults: true
-                                };
-                            } catch (error) {
-                                // إذا لم يكن الـ endpoint متوفر، نعرض الامتحان بدون إحصائيات
-                                return {
-                                    ...exam,
-                                    studentsCount: "غير معروف",
-                                    submissionsCount: "غير معروف",
-                                    averageGrade: "غير معروف",
-                                    hasResults: false
-                                };
-                            }
-                        })
-                    );
-
-                    setExams(examsWithStats);
+                    setExams(examsData);
                 } else {
                     setExams([]);
                 }
             } catch (error) {
                 console.error("Error fetching exams:", error);
                 toast.error("حدث خطأ في تحميل الامتحانات");
-
-                // Mock data للتجربة
-                setExams([
-                    {
-                        id: 1,
-                        name: "امتحان الرياضيات - الوحدة الأولى",
-                        description: "امتحان شامل على الوحدة الأولى",
-                        startDate: "2025-10-01T10:00:00",
-                        time: 60,
-                        questions: Array(10).fill().map((_, i) => ({ id: i + 1, degree: 10 })),
-                        studentsCount: 25,
-                        submissionsCount: 20,
-                        averageGrade: 75.5,
-                        hasResults: true
-                    },
-                    {
-                        id: 2,
-                        name: "امتحان الفيزياء - الحركة",
-                        description: "امتحان على وحدة الحركة والقوى",
-                        startDate: "2025-10-03T14:00:00",
-                        time: 45,
-                        questions: Array(8).fill().map((_, i) => ({ id: i + 1, degree: 12.5 })),
-                        studentsCount: 30,
-                        submissionsCount: 28,
-                        averageGrade: 68.2,
-                        hasResults: true
-                    }
-                ]);
+                setExams([]);
             } finally {
                 setLoading(false);
             }
@@ -102,7 +44,6 @@ const ExamResultsManagement = () => {
     }, []);
 
     const handleViewResults = (exam) => {
-        // التوجه لصفحة تفاصيل نتائج الامتحان
         navigate(`/dashboard/exam-results/${exam.id}`);
     };
 
@@ -149,7 +90,6 @@ const ExamResultsManagement = () => {
                                         className={`rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl ${isDarkMode ? "bg-gray-800 border border-gray-700" : "bg-white"
                                             }`}
                                     >
-                                        {/* Header */}
                                         <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4">
                                             <h3 className="text-xl font-bold text-white mb-2">{exam.name}</h3>
                                             <div className="flex justify-between items-center text-white text-sm">
@@ -158,61 +98,12 @@ const ExamResultsManagement = () => {
                                             </div>
                                         </div>
 
-                                        {/* Content */}
                                         <div className="p-6">
                                             <p className={`text-sm mb-4 line-clamp-2 ${isDarkMode ? "text-gray-300" : "text-gray-600"
                                                 }`}>
                                                 {exam.description}
                                             </p>
 
-                                            {/* Statistics */}
-                                            <div className="grid grid-cols-2 gap-4 mb-6">
-                                                <div className={`p-3 rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-100"}`}>
-                                                    <div className="text-center">
-                                                        <div className={`text-lg font-bold ${isDarkMode ? "text-white" : "text-gray-800"}`}>
-                                                            {questionsCount}
-                                                        </div>
-                                                        <div className={`text-xs ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
-                                                            سؤال
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className={`p-3 rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-100"}`}>
-                                                    <div className="text-center">
-                                                        <div className={`text-lg font-bold ${isDarkMode ? "text-white" : "text-gray-800"}`}>
-                                                            {totalMarks}
-                                                        </div>
-                                                        <div className={`text-xs ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
-                                                            درجة
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className={`p-3 rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-100"}`}>
-                                                    <div className="text-center">
-                                                        <div className={`text-lg font-bold ${isDarkMode ? "text-white" : "text-gray-800"}`}>
-                                                            {exam.submissionsCount}
-                                                        </div>
-                                                        <div className={`text-xs ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
-                                                            طالب أدى الامتحان
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className={`p-3 rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-100"}`}>
-                                                    <div className="text-center">
-                                                        <div className={`text-lg font-bold ${isDarkMode ? "text-white" : "text-gray-800"}`}>
-                                                            {typeof exam.averageGrade === 'number' ? exam.averageGrade.toFixed(1) : exam.averageGrade}
-                                                        </div>
-                                                        <div className={`text-xs ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
-                                                            متوسط الدرجات
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {/* Action Buttons */}
                                             <div className="space-y-3">
                                                 <button
                                                     onClick={() => handleViewResults(exam)}
@@ -220,30 +111,6 @@ const ExamResultsManagement = () => {
                                                 >
                                                     📊 عرض النتائج والدرجات
                                                 </button>
-
-                                                <div className="grid grid-cols-2 gap-3">
-                                                    <button
-                                                        onClick={() => navigate(`/exam-details/${exam.id}`)}
-                                                        className={`py-2 px-4 border-2 font-bold rounded-lg transition-all duration-200 ${isDarkMode
-                                                                ? "border-gray-600 text-gray-300 hover:bg-gray-700"
-                                                                : "border-gray-300 text-gray-700 hover:bg-gray-50"
-                                                            }`}
-                                                    >
-                                                        📋 تفاصيل
-                                                    </button>
-
-                                                    <button
-                                                        onClick={() => {
-                                                            toast.info(`إحصائيات امتحان: ${exam.name}`);
-                                                        }}
-                                                        className={`py-2 px-4 border-2 font-bold rounded-lg transition-all duration-200 ${isDarkMode
-                                                                ? "border-gray-600 text-gray-300 hover:bg-gray-700"
-                                                                : "border-gray-300 text-gray-700 hover:bg-gray-50"
-                                                            }`}
-                                                    >
-                                                        📈 إحصائيات
-                                                    </button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -258,6 +125,3 @@ const ExamResultsManagement = () => {
 };
 
 export default ExamResultsManagement;
-
-
-

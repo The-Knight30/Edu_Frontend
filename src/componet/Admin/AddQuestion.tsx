@@ -5,7 +5,7 @@ import React from "react"
 import { useState, useContext } from "react"
 import { ThemeContext } from "../Context/ThemeContext"
 import sendRequest from "../Shared/sendRequest.ts";
-import { BASEURL } from "../API/API"
+import { BASEURL, GET_EXAMS_LIST_ENDPOINT } from "../API/API"
 import { toast } from "react-toastify"
 import SpinnerModal from "../Shared/SpinnerModal"
 
@@ -24,6 +24,7 @@ interface QuestionData {
 const AddQuestion = () => {
   const { isDarkMode } = useContext(ThemeContext)
   const [isLoading, setIsLoading] = useState(false)
+  const [exams, setExams] = useState<{ id: number; name: string }[]>([])
   const [questionData, setQuestionData] = useState<QuestionData>({
     questionText: "",
     option1: "",
@@ -43,6 +44,31 @@ const AddQuestion = () => {
       [name]: name === "degree" || name === "type" || name === "examId" ? Number.parseInt(value) || 0 : value,
     }))
   }
+
+  // Fetch exams for dropdown
+  React.useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        const res = await fetch(`${BASEURL}/${GET_EXAMS_LIST_ENDPOINT}`, {
+          credentials: "include",
+          headers: { "Accept": "application/json" },
+        })
+        if (!res.ok) throw new Error(`Failed to load exams: ${res.status}`)
+        const data = await res.json()
+        const list = Array.isArray(data)
+          ? data.map((e: any) => ({ id: e.id, name: e.name }))
+          : []
+        setExams(list)
+        if (list.length && !questionData.examId) {
+          setQuestionData(prev => ({ ...prev, examId: list[0].id }))
+        }
+      } catch (err) {
+        console.error(err)
+        toast.error("تعذر تحميل قائمة الامتحانات")
+      }
+    }
+    fetchExams()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -89,20 +115,23 @@ const AddQuestion = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
-                    رقم الامتحان
+                    اختر الامتحان
                   </label>
-                  <input
-                    type="number"
+                  <select
                     name="examId"
                     value={questionData.examId || ""}
                     onChange={handleInputChange}
                     required
-                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all ${isDarkMode
-                      ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                      : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
-                      }`}
-                    placeholder="أدخل رقم الامتحان"
-                  />
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all ${isDarkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
+                  >
+                    {Array.isArray(exams) && exams.length > 0 ? (
+                      exams.map((ex) => (
+                        <option key={ex.id} value={ex.id}>{ex.name} (#{ex.id})</option>
+                      ))
+                    ) : (
+                      <option value="">لا توجد امتحانات متاحة</option>
+                    )}
+                  </select>
                 </div>
 
                 <div>

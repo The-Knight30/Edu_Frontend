@@ -161,6 +161,14 @@ const AvailableExams = () => {
                         <p className={`text-lg ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
                             اختر الامتحان الذي تريد أداءه
                         </p>
+                        <div className="mt-4">
+                            <button
+                                onClick={() => navigate("/")}
+                                className={`inline-flex items-center gap-2 px-4 py-2 font-bold rounded-lg ${isDarkMode ? "bg-gray-700 text-white hover:bg-gray-600" : "bg-gray-200 text-gray-800 hover:bg-gray-300"}`}
+                            >
+                                ⬅️ العودة للرئيسية
+                            </button>
+                        </div>
                     </div>
 
                     <SpinnerModal isLoading={loading} />
