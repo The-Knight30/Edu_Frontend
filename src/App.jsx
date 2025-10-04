@@ -50,6 +50,12 @@ import RequireAuth from "./componet/Registration/RequireAuth";
 import useCheckCookiesValues from "./componet/Hooks/useCheckCookiesValues";
 
 import RemoveStudentFromCourse from "./componet/Admin/RemoveStudentFromCourse";
+import Terms from "./Pages/Terms";
+import PrivacyPolicy from "./Pages/privacy-policy";
+import RefundPolicy from "./Pages/RefundPolicy";
+import ShippingPolicy from "./Pages/shipping-policy";
+import AboutUs from "./Pages/AboutUs";
+
 import UsersForCourses from "./componet/Admin/UsersForCourses";
 import { useEffect } from "react";
 
@@ -141,7 +147,15 @@ function App() {
           </Route>
         </Route>
         {/* Routes for student */}
+        {/* Legal Pages */}
+<Route path="/terms-and-conditions" element={<Terms />} />
+<Route path="/privacy-policy" element={<PrivacyPolicy />} />
+<Route path="/refund-policy" element={<RefundPolicy />} />
+<Route path="/shipping-policy" element={<ShippingPolicy />} />
+<Route path="/about-us" element={<AboutUs />} />
+
       </Routes>
+     
     </>
   );
 }
