@@ -308,4 +308,3 @@ const ExamDetails = () => {
 };
 
 export default ExamDetails;
-

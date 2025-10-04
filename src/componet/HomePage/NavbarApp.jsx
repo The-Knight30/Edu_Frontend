@@ -14,7 +14,6 @@ export const handleSignOut = async () => {
     const res = await sendRequest(BASEURL, `${SIGNOUT}`, "DELETE");
 
     cookies.removeAll();
-    // window.location.pathname = "/login";
 
     window.location.pathname = "/";
   } catch (error) {
@@ -27,7 +26,6 @@ function NavbarApp() {
   const cookies = Cookies();
 
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
-  // const { auth } = useContext(AuthContext);
   const auth = { role: cookies.get("role") };
   const [isOpen, setIsOpen] = useState(false);
   const handleToggle = () => {
@@ -40,12 +38,13 @@ function NavbarApp() {
   };
 
   const firstName = cookies.get("firstName");
-
   const lastName = cookies.get("lastName");
   const email = cookies.get("email");
 
   const rawStudentId = cookies.get("id");
   const studentID = parseInt(rawStudentId, 10);
+
+  const isAdmin = auth.role === "Admin";
 
   return (
     <>
@@ -167,31 +166,6 @@ function NavbarApp() {
                       📝 الامتحانات
                     </Link>
                   </li>
-                  {/* <li className="mt-5 md:mt-0">
-                    <button
-                      onClick={async () => {
-                        await handleSignOut();
-                      }}
-                      className="flex items-center justify-center w-full px-4 py-2 font-medium text-white transition duration-700 bg-red-600 rounded-lg md:text-xl font-Mukta hover:bg-red-700"
-                      to="/signup"
-                    >
-                      تسجيل خروج{" "}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
-                        />
-                      </svg>
-                    </button>
-                  </li> */}
                 </>
               ) : (
                 <>
@@ -292,14 +266,26 @@ function NavbarApp() {
               </span>
             </div>
             <ul className="py-2 text-right" aria-labelledby="user-menu-button">
-              <li>
-                <Link
-                  to={`dashboardstu/:${studentID}`}
-                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-10"
-                >
-                  صفحة الطالب
-                </Link>
-              </li>
+              {!isAdmin && (
+                <li>
+                  <Link
+                    to={`dashboardstu/:${studentID}`}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-10"
+                  >
+                    صفحة الطالب
+                  </Link>
+                </li>
+              )}
+              {isAdmin && (
+                <li>
+                  <Link
+                    to={`/dashboard`}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-10"
+                  >
+                    صفحة المدير
+                  </Link>
+                </li>
+              )}
               <li>
                 <button
                   onClick={handleSignOut}

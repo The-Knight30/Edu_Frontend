@@ -53,10 +53,7 @@ const AvailableCoursesToBuy = () => {
         navigate(`/paymob-payment/${course.courseId}/${course.coursePrice}/${encodeURIComponent(course.courseName)}`);
     };
 
-    const handleViewDetails = (course) => {
-        // عرض تفاصيل الكورس
-        navigate(`/course-details/${course.courseId}`, { state: { course } });
-    };
+    // تفاصيل الكورس غير مدعومة حالياً، سيتم الإبقاء على الشراء فقط
 
     return (
         <>
@@ -128,15 +125,7 @@ const AvailableCoursesToBuy = () => {
                                                 🛒 اشترك الآن
                                             </button>
 
-                                            <button
-                                                onClick={() => handleViewDetails(course)}
-                                                className={`w-full py-3 border-2 font-bold rounded-lg transform hover:scale-105 transition-all duration-200 ${isDarkMode
-                                                        ? "border-gray-600 text-gray-300 hover:bg-gray-700"
-                                                        : "border-gray-300 text-gray-700 hover:bg-gray-50"
-                                                    }`}
-                                            >
-                                                📋 عرض التفاصيل
-                                            </button>
+                                            {/* زر التفاصيل مُزال مؤقتاً لعدم توفر صفحة التفاصيل */}
                                         </div>
                                     </div>
                                 </div>

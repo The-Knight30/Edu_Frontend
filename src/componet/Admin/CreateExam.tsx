@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useState, useContext } from "react"  // import React كامل عشان يحل TS error 2686
+import React, { useState, useContext, useEffect } from "react"  // import React كامل عشان يحل TS error 2686
 import { ThemeContext } from "../Context/ThemeContext"
 import sendRequest from "../Shared/sendRequest.ts"
+import sendRequestGet from "../Shared/sendRequestGet.ts"
 import { BASEURL } from "../API/API"
 import { toast } from "react-toastify"
 import SpinnerModal from "../Shared/SpinnerModal"
@@ -26,6 +27,27 @@ const CreateExam = () => {
     courseId: 0,
   })
 
+  // Courses list for dropdown
+  const [courses, setCourses] = useState<{ courseId: number; courseName: string }[]>([])
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await sendRequestGet(`${BASEURL}/Courses/GetAllCourses`)
+        const list = Array.isArray(res?.data)
+          ? res.data.map((c: any) => ({ courseId: c.courseId, courseName: c.courseName }))
+          : []
+        setCourses(list)
+        if (list.length && !examData.courseId) {
+          setExamData(prev => ({ ...prev, courseId: list[0].courseId }))
+        }
+      } catch (e) {
+        console.error("Failed to load courses", e)
+      }
+    }
+    fetchCourses()
+  }, [])
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setExamData((prev) => ({
@@ -36,7 +58,7 @@ const CreateExam = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // تحقق إضافي لو الـ data valid (مثل time >0، courseId >0)
     if (examData.time <= 0 || examData.courseId <= 0 || !examData.startDate) {
       toast.error("يرجى ملء جميع الحقول بشكل صحيح")
@@ -109,20 +131,23 @@ const CreateExam = () => {
 
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
-                    رقم الكورس
+                    اختر الكورس
                   </label>
-                  <input
-                    type="number"
+                  <select
                     name="courseId"
                     value={examData.courseId || ""}
                     onChange={handleInputChange}
                     required
-                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${isDarkMode
-                      ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                      : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
-                      }`}
-                    placeholder="أدخل رقم الكورس"
-                  />
+                    className={`w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all ${isDarkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
+                  >
+                    {Array.isArray(courses) && courses.length > 0 ? (
+                      courses.map((c) => (
+                        <option key={c.courseId} value={c.courseId}>{c.courseName} (#{c.courseId})</option>
+                      ))
+                    ) : (
+                      <option value="">لا توجد كورسات متاحة</option>
+                    )}
+                  </select>
                 </div>
               </div>
 
