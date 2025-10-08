@@ -12,7 +12,7 @@ export default function AboutUs() {
         Our mission is to make education accessible, engaging, and affordable for every student in Egypt.
       </p>
       <p className="mt-3">
-        Address: BeniSuef , Benisuef, Egypt<br />
+        Address: بني سويف شرق النيل أمام كلية الدراسات<br />
         Email: theknightahmedgaber@gmail.com<br />
         Phone: 01003709007
       </p>

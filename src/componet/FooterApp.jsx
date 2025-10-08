@@ -16,9 +16,9 @@ function FooterApp() {
                     <img src={wattsAppImg} className="w-10 h-12 mt-2.5" alt="WattsApp site" loading="lazy" />
                 </Link>
             </div>
-            
+
              <div className="mb-4">
-        <h3 className="text-lg font-semibold text-amber-400 mb-2">Quick Links</h3>
+       
         <ul className="flex justify-center flex-wrap gap-4 text-sm text-stone-300">
           <li><Link to="/terms-and-conditions" className="hover:text-amber-400">Terms & Conditions</Link></li>
           <li><Link to="/privacy-policy" className="hover:text-amber-400">Privacy Policy</Link></li>
@@ -30,6 +30,10 @@ function FooterApp() {
             <div className="text-center text-stone-300 text-xs font-bold leading-normal">
                 هذه المنصة لمساعدة الطالب في مادة اللغة الإنجليزية خلال فترة التعليم.
             </div>
+              <div className="text-stone-400 text-sm leading-relaxed font-medium mt-2">
+        <p>📍 العنوان: بني سويف شرق النيل أمام كلية الدراسات</p>
+        <p>📧 البريد الإلكتروني: <a href="mailto:theknightahmedgaber@gmail.com" className="text-amber-400 hover:text-amber-300">theknightahmedgaber@gmail.com</a></p>
+      </div>
             <Link className="mt-1 text-center text-stone-300 text-sm font-bold leading-normal" to="https://www.facebook.com/vfidigital?mibextid=ZbWKwL" target="_blank" >
                 Developed By: <span className=' text-sky-400  hover:text-sky-500'>VFI Digital Services</span>
             </Link>
